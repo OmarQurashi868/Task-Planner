@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block pagename %}
+Register
+{% endblock %}
+
+{% block main %}
+<main class="container p-3" id="slimcontainer">
+    <div class="mt-5">
+        {% if feedback %}
+            <div class="alert alert-primary" role="alert">
+                {{ feedback }}
+            </div>
+        {% endif %}
+        <form method="post">
+            <div class="form-floating my-3">
+                <input autofocus autocomplete="off" type="text" class="form-control" id="floatingDisplay" name="displayname" placeholder="Display name">
+                <label for="floatingInput">Display name</label>
+            </div>
+            <div class="form-floating my-3">
+                <input autofocus autocomplete="off" type="text" class="form-control" id="floatingInput" name="username" placeholder="Username">
+                <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating my-3">
+                <input autocomplete="off" type="password" class="form-control" id="floatingPassword" 
+                name="password" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+            </div>
+            <div class="form-floating my-3">
+                <input autocomplete="off" type="password" class="form-control" id="floatingConfirm" 
+                name="confirmation" placeholder="Confirm password">
+                <label for="floatingPassword">Confirm password</label>
+            </div>
+            <button type="submit" class="btn btn-primary text-center w-100">Register</button>
+        </form>
+        <br>
+        <div style="text-align: center;">
+            <span>Already have an account? <a href="/login">Log in</a></span>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Account Settings
+{% endblock %}
+
+{% block pagename %}
+Account Settings
+{% endblock %}
+
+{% block main %}
+<main class="container p-3" id="slimcontainer">
+    <div class="mt-5">
+        {% if feedback %}
+            <div class="alert alert-primary" role="alert">
+                {{ feedback }}
+            </div>
+        {% endif %}
+
+        <span><strong>Change display name:</strong></span>
+        <form method="post">
+            <input name="op" type="hidden" value="0">
+            <div class="form-floating mb-3 d-flex align-items-center col-xs-11 my-3">
+                <input type="text" class="form-control" id="floatingdisplay" name="displayname" placeholder="Display name">
+                <label for="floatingInput">Display name</label>
+            </div>
+            <button type="submit" class="btn btn-primary text-center w-100">Change display name</button>
+        </form>
+        <hr>
+        <span><strong>Change password:</strong></span>
+        <form method="post">
+            <input name="op" type="hidden" value="1">
+            <div class="form-floating my-3">
+                <input autocomplete="off" type="password" class="form-control" id="floatingoldpw" 
+                name="oldpw" placeholder="Old password">
+                <label for="floatingPassword">Old password</label>
+            </div>
+            <div class="form-floating my-3">
+                <input autocomplete="off" type="password" class="form-control" id="floatingnewpw" 
+                name="newpw" placeholder="New password">
+                <label for="floatingPassword">New password</label>
+            </div>
+            <div class="form-floating my-3">
+                <input autocomplete="off" type="password" class="form-control" id="floatingconfirm" 
+                name="confirmation" placeholder="Confirm new password">
+                <label for="floatingPassword">Confirm new password</label>
+            </div>
+            <button type="submit" class="btn btn-primary text-center w-100">Change password</button>
+        </form>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends "layout.html" %}
+
+{% block title%}
+Task Planner
+{% endblock %}
+
+{% block pagename %}
+{{ session["board_name"] }}
+{% endblock %}
+
+{% block main %}
+<main class="d-flex align-items-start flex-column flex-md-row gap-3 mt-5 p-3 pt-4">
+{% for list in lists %}
+    <div class="container rounded-3 p-3 border" style="background-color: white;" id="listcard">
+        <div class="d-flex justify-content-between align-items-center">
+            <p class="my-auto text-break" style="font-weight: bold;">
+                {{ list.name }}
+            </p>
+            <div class="dropdown">
+                <button data-bs-display="static" class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#listrenamemodal{{ list.id }}">Rename</button></li>
+                <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#listdeletemodal{{ list.id }}">Delete</button></li>
+                </ul>
+            </div>
+        </div>
+        {% for task in list.tasks %}
+            <div class="d-flex border border-gray-500 rounded-3 my-3 p-2 text-wrap align-items-center justify-content-between text-break">
+                <p class="my-auto">
+                    {{ task.task }}
+                </p>
+                <div class="dropdown">
+                    <button data-bs-display="static" class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="otherdropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                    <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#taskmovemodal{{ task.id }}">Move</button></li>   
+                    <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#taskrenamemodal{{ task.id }}">Rename</button></li>
+                    <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#taskdeletemodal{{ task.id }}">Delete</button></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- move task modal -->
+            <div class="modal fade" id="taskmovemodal{{ task.id }}" tabindex="-1" aria-labelledby="movetaskmodal" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="movetaskmodal">Move task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Where do you want to move "{{ task.task }}" to?
+                        <form action="/" method="post">
+                            <select class="form-select" aria-label="newidselect" name="listid">
+                                    <option selected disabled value="">Select list</option>
+                                    {% for listlist in lists if not listlist.id == task.listid %}
+                                    <option value="{{ listlist.id }}">{{ listlist.name }}</option>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        <input type="hidden" name="op" value="mt">
+                        <input type="hidden" name="id" value="{{ task.id }}">
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+                    </form>
+                </div>
+                </div>
+                </div>
+            </div>
+            <!-- Rename task modal -->
+            <div class="modal fade" id="taskrenamemodal{{ task.id}}" tabindex="-1" aria-labelledby="taskrenamemodal{{ task.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="renametaskmodal{{ task.id }}">Rename list</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            What do you want to change "{{ task.task }}" to?
+                            <form action="/" method="post">
+                            <input type="text" minlength="1" maxlength="26" class="form-control my-1" name="name" autofocus>
+                            <input type="hidden" name="op" value="rt">
+                            <input type="hidden" name="id" value="{{ task.id }}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Delete task modal -->
+            <div class="modal fade" id="taskdeletemodal{{ task.id }}" tabindexs="-1" aria-labelledby="taskdeletemodal{{ task.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="deletetaskmodal{{ task.id }}">Delete list</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete "{{ task.task }}"?<br>You will <strong>permanently</strong> lose this task.
+                            <form action="/" method="post">
+                            <input type="hidden" name="op" value="dt">
+                            <input type="hidden" name="id" value="{{ task.id }}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
+        <button type="button" class="btn btn-primary w-100 mt-2" data-bs-toggle="modal" data-bs-target="#addtaskmodal{{ list.id }}">+</button>
+
+        <!-- Add task modal -->
+        <div class="modal fade" id="addtaskmodal{{ list.id }}" tabindex="-1" aria-labelledby="addtaskmodal" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="addtaskmodal">Add task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    What is the task you want to add?
+                    <form action="/" method="post">
+                    <input type="text" maxlength="100" class="form-control my-1" name="name" autofocus>
+                    <input type="hidden" name="op" value="ct">
+                    <input type="hidden" name="id" value="{{ list.id }}">
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+                </form>
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename list modal -->
+    <div class="modal fade" id="listrenamemodal{{ list.id}}" tabindex="-1" aria-labelledby="listrenamemodal{{ list.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="renamelistmodal{{ list.id }}">Rename list</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    What do you want to rename "{{ list.name }}" to?
+                    <form action="/" method="post">
+                    <input type="text" minlength="1" maxlength="26" class="form-control my-1" name="name" autofocus>
+                    <input type="hidden" name="op" value="rl">
+                    <input type="hidden" name="id" value="{{ list.id }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete list modal -->
+    <div class="modal fade" id="listdeletemodal{{ list.id }}" tabindexs="-1" aria-labelledby="listdeletemodal{{ list.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="deletelistmodal{{ list.id }}">Delete list</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete "{{ list.name }}"?<br>You will <strong>permanently</strong> lose all tasks inside of it.
+                    <form action="/" method="post">
+                    <input type="hidden" name="op" value="dl">
+                    <input type="hidden" name="id" value="{{ list.id }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+
+    <div class="container-md rounded-3 p-3" style="background-color: rgba(185, 210, 252, 0.637);" id="listcard">
+        <p class="text-center" style="font-weight: bold;">
+            Add list
+        </p>
+        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addlistmodal">+</button>
+    </div>
+
+    <!-- Add list modal -->
+    <div class="modal fade" id="addlistmodal" tabindex="-1" aria-labelledby="addlistmodal" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="addlistmodal">New list</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                What is the list you want to add?
+                <form action="/" method="post">
+                <input type="text" maxlength="26" class="form-control my-1" name="name" autofocus>
+                <input type="hidden" name="op" value="cl">
+                <input type="hidden" name="id" value="{{ session['board_id'] }}">
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+            </form>
+        </div>
+        </div>
+        </div>
+    </div>
+
+</main>
+{% endblock %}

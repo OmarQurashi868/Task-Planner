@@ -1,0 +1,50 @@
+.textlink {
+    color: #e4e4e4;
+    text-decoration: none;
+}
+
+.textlink:hover {
+    color: #c5c5c5;
+    text-decoration: none;
+}
+
+.whitetext {
+    color: #ffffff;
+}
+
+.offcanvas-title {
+    color: #ffffff;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#slimcontainer {
+    width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+    #slimcontainer {
+        
+        width: 25%;
+    }
+}
+
+.listtitle {
+    text-align: center;
+    color: black;
+}
+
+.modal-backdrop {
+    z-index: 3;
+}
+
+body, html {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+#listcard {
+    min-width: 235px;
+}
