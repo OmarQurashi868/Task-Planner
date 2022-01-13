@@ -7,13 +7,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 
+app.secret_key = "  273b7b1faed6b6854"
 
 
-# configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = True
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
 
 # initiate database
 dbvar = sqlite3.connect("main.db", check_same_thread=False)
