@@ -592,3 +592,7 @@ def mtask(taskid, listid):
     db.execute("INSERT INTO tasks (listid, task) VALUES (?1, ?2)", (listid, task[0]))
     db.execute("DELETE FROM tasks WHERE id = ?1", (taskid,))
     dbvar.commit()
+
+
+if __name__ == "__main__":
+    app.run()
