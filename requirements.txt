@@ -2,7 +2,6 @@ Flask==1.1.4
 MarkupSafe==2.0.1
 astroid==2.9.0
 cachelib==0.5.0
-click==8.0.3
 colorama==0.4.4
 Flask-Session==0.4.0
 isort==5.10.1
