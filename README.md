@@ -1,6 +1,10 @@
 #### TaskPlanner
 
-### https://psytp.herokuapp.com/
+### https://omar-task-planner.vercel.app/
+
+## Note:
+
+The app used SQLite3 which is disk-based and doesn't work on online hosting platforms like Vercel (currently used). So the website cannot register or write any data, it can only read from the initial database.
 
 ## Description:
 
